@@ -1,13 +1,16 @@
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import Image from 'next/image';
+import { createClient } from '@supabase/supabase-js';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
-const supabase = createClient('https://chemlexsphooxgjajapc.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoZW1sZXhzcGhvb3hnamFqYXBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwODQ0MjksImV4cCI6MjA2MDY2MDQyOX0.ShWXQAaCjOpDWoEzRECEzAZdLfnwAQy8-H3R5LYwBNM');
+const supabase = createClient(
+  "https://chemlexsphooxgjajapc.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNoZW1sZXhzcGhvb3hnamFqYXBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwODQ0MjksImV4cCI6MjA2MDY2MDQyOX0.ShWXQAaCjOpDWoEzRECEzAZdLfnwAQy8-H3R5LYwBNM"
+);
 
 export default function EnglishClassPlatform() {
   const [student, setStudent] = useState({
@@ -39,8 +42,8 @@ export default function EnglishClassPlatform() {
     const updatedHistory = [...student.classHistory, newClassDate];
     const { data } = await supabase
       .from('students')
-      .update({ 
-        classHistory: updatedHistory, 
+      .update({
+        classHistory: updatedHistory,
         remainingClasses: Math.max(0, student.remainingClasses - 1)
       })
       .eq('id', student.id)
@@ -85,7 +88,7 @@ export default function EnglishClassPlatform() {
               <div>
                 <label className="block mb-1">Seu Email</label>
                 <Input
-                  value={ emailInput }
+                  value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
                   placeholder="Digite seu e-mail"
                 />

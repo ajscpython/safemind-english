@@ -1,6 +1,5 @@
-import dynamic from 'next/dynamic';
-const Platform = dynamic(() => import('@/components/EnglishClassPlatform'), { ssr: false });
+import EnglishClassPlatform from "@/components/EnglishClassPlatform";
 
 export default function Home() {
-  return <Platform />;
+  return <EnglishClassPlatform />;
 }

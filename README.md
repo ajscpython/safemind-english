@@ -1,3 +1,3 @@
-# SafeMind English + Supabase
+# SafeMind English - Corrigido
 
-Plataforma integrada com Supabase para controle de alunos, aulas e pagamentos.
+Renderiza corretamente no navegador.
