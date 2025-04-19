@@ -1,11 +1,10 @@
-
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { createClient } from '@supabase/supabase-js';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs';
 
 const supabase = createClient(
   "https://chemlexsphooxgjajapc.supabase.co",
@@ -22,6 +21,7 @@ export default function EnglishClassPlatform() {
   });
   const [emailInput, setEmailInput] = useState('');
   const [newClassDate, setNewClassDate] = useState('');
+  const [activeTab, setActiveTab] = useState('student');
   const [loaded, setLoaded] = useState(false);
 
   const fetchStudent = async (email) => {
@@ -70,23 +70,22 @@ export default function EnglishClassPlatform() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="flex justify-center">
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Image src="/logo-safemind.jpeg" alt="Logo SafeMind" width={150} height={150} />
       </div>
-      <h1 className="text-2xl font-bold text-center">Safe Mind - English Class Portal</h1>
-
-      <Tabs defaultValue="student" className="space-y-4">
-        <TabsList className="flex justify-center gap-4">
-          <TabsTrigger value="student">Área do Aluno</TabsTrigger>
-          <TabsTrigger value="admin">Área do Professor</TabsTrigger>
+      <h1 style={{ textAlign: 'center' }}>Safe Mind - English Class Portal</h1>
+      <Tabs defaultValue="student">
+        <TabsList>
+          <TabsTrigger value="student" activeTab={activeTab} setActiveTab={setActiveTab}>Área do Aluno</TabsTrigger>
+          <TabsTrigger value="admin" activeTab={activeTab} setActiveTab={setActiveTab}>Área do Professor</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="student">
+        <TabsContent value="student" activeTab={activeTab}>
           <Card>
-            <CardContent className="space-y-4 p-4">
+            <CardContent>
               <div>
-                <label className="block mb-1">Seu Email</label>
+                <label>Email do aluno</label>
                 <Input
                   value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
@@ -96,11 +95,9 @@ export default function EnglishClassPlatform() {
               </div>
               {loaded && (
                 <>
-                  <div>
-                    <p><strong>Nome:</strong> {student.name}</p>
-                    <p><strong>Aulas Restantes:</strong> {student.remainingClasses}</p>
-                    <p><strong>Status de Pagamento:</strong> {student.paymentStatus}</p>
-                  </div>
+                  <p><strong>Nome:</strong> {student.name}</p>
+                  <p><strong>Aulas Restantes:</strong> {student.remainingClasses}</p>
+                  <p><strong>Status de Pagamento:</strong> {student.paymentStatus}</p>
                   {student.paymentStatus !== 'paid' && (
                     <Button onClick={handlePayment}>Realizar Pagamento</Button>
                   )}
@@ -110,17 +107,17 @@ export default function EnglishClassPlatform() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="admin">
+        <TabsContent value="admin" activeTab={activeTab}>
           <Card>
-            <CardContent className="space-y-4 p-4">
-              <p className="font-semibold">Histórico de Aulas de {student.name}</p>
-              <ul className="list-disc list-inside">
+            <CardContent>
+              <p><strong>Histórico de Aulas de {student.name}</strong></p>
+              <ul>
                 {student.classHistory.map((date, index) => (
                   <li key={index}>{date}</li>
                 ))}
               </ul>
-              <div className="space-y-2">
-                <label className="block">Nova Aula (Data)</label>
+              <div>
+                <label>Nova Aula (Data)</label>
                 <Input
                   type="date"
                   value={newClassDate}
